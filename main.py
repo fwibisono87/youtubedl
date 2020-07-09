@@ -94,53 +94,69 @@ def downloadYT(links):
             "|", "").replace("/", "").replace('?', "").replace("*", "")
         title = temptitle[:70] + (temptitle[70:] and '..')
 
-        while True:
-            trycounter = 1
-            try:
-                print("Now downloading video stream of %s from Youtube" % title)
-                video.streams.filter(mime_type='video/mp4').order_by('resolution').desc().first().download(
-                    os.path.join(os.getcwd(), 'temp'), "video")
-                print("Video stream downloaded.")
-                break
-            except:
-                if trycounter <= 5:
-                    print("A failure has occured, retrying in 15 seconds, attempt %d out of 5" % trycounter)
-                    trycounter += 1
-                    time.sleep(15)
-                else:
-                    print("try limit failed, attempting to download audio only.")
+        print("Checking if video has been downloaded...")
+        if(os.path.exists(os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))):
+            print("Video %s has been downloaded. Do you want to re-download?(Y/N)" % title)
+            while True:
+                confirm = input(">>> ")
+                if (confirm == 'Y' or confirm == 'y'):
+                    print("Downloading!")
+                    doToken = True
+                elif(confirm == 'n' or confirm == 'N'):
+                    print("Skipping download.")
+                    doToken = False
+        else:
+            print("No previous download found, downloading!")
+            doToken = True
+
+        if doToken == True:
+            while True:
+                trycounter = 1
+                try:
+                    print("Now downloading video stream of %s from Youtube" % title)
+                    video.streams.filter(mime_type='video/mp4').order_by('resolution').desc().first().download(
+                        os.path.join(os.getcwd(), 'temp'), "video")
+                    print("Video stream downloaded.")
                     break
-        while True:
-            trycounter = 1
-            try:
-                print("Now downloading audio stream of %s from Youtube" % title)
-                video.streams.filter(mime_type='audio/mp4').order_by('abr').desc().first().download(
-                    os.path.join(os.getcwd(), 'temp'), "audio")
-                print("Audio stream downloaded.")
-                break
-            except:
-                if trycounter <= 5:
-                    print("A failure has occured, retrying in 15 seconds, attempt %d out of 5" % trycounter)
-                    trycounter += 1
-                    time.sleep(15)
-                else:
-                    print("try limit failed, skipping this download.")
-                    return None
+                except:
+                    if trycounter <= 5:
+                        print("A failure has occured, retrying in 15 seconds, attempt %d out of 5" % trycounter)
+                        trycounter += 1
+                        time.sleep(15)
+                    else:
+                        print("try limit failed, attempting to download audio only.")
+                        break
+            while True:
+                trycounter = 1
+                try:
+                    print("Now downloading audio stream of %s from Youtube" % title)
+                    video.streams.filter(mime_type='audio/mp4').order_by('abr').desc().first().download(
+                        os.path.join(os.getcwd(), 'temp'), "audio")
+                    print("Audio stream downloaded.")
+                    break
+                except:
+                    if trycounter <= 5:
+                        print("A failure has occured, retrying in 15 seconds, attempt %d out of 5" % trycounter)
+                        trycounter += 1
+                        time.sleep(15)
+                    else:
+                        print("try limit failed, skipping this download.")
+                        return None
 
-        video = os.path.join(os.getcwd(), 'temp', 'video.mp4')
-        audio = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
-        temp = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
+            video = os.path.join(os.getcwd(), 'temp', 'video.mp4')
+            audio = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
+            temp = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
 
-        if os.path.exists(video) and os.path.exists(audio):
-            print("Now concatenating video and audio streams of %s" % title)
-            os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (video, audio, temp))
-            shutil.move(temp, os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))
-            os.remove(video)
-            os.remove(audio)
-            print("Finished processing %s, video %d out of %d" % (title, current, size))
-        elif os.path.exists(audio):
-            shutil.move(audio, os.path.join(os.getcwd(), 'videos', '%s.mp4') % title)
-            print("Finished processing %s, video %d out of %d. WARNING: NO VIDEO!" % (title, current, size))
+            if os.path.exists(video) and os.path.exists(audio):
+                print("Now concatenating video and audio streams of %s" % title)
+                os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (video, audio, temp))
+                shutil.move(temp, os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))
+                os.remove(video)
+                os.remove(audio)
+                print("Finished processing %s, video %d out of %d" % (title, current, size))
+            elif os.path.exists(audio):
+                shutil.move(audio, os.path.join(os.getcwd(), 'videos', '%s.mp4') % title)
+                print("Finished processing %s, video %d out of %d. WARNING: NO VIDEO!" % (title, current, size))
 
 
 def downloadFB(links):
