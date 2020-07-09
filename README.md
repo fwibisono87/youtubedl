@@ -9,7 +9,7 @@ Windows users: please run the preparation.bat, and follow instructions on the af
 Finally, run the program using cmd 'python main.py'
 
 This project utilizes:
-PyTube    https://pypi.org/project/pytube3/
-FFmpeg    https://ffmpeg.org/
-requests  https://requests.readthedocs.io/en/master/
-wget      https://pypi.org/project/wget/
+*PyTube    https://pypi.org/project/pytube3/
+*FFmpeg    https://ffmpeg.org/
+*requests  https://requests.readthedocs.io/en/master/
+*wget      https://pypi.org/project/wget/
