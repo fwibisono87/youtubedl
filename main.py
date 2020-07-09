@@ -11,22 +11,41 @@ from pytube import YouTube
 
 
 def main():
-    print("Welcome to the Youtube Downloader")
-    print("Choose input method! (FILE/TERMINAL)")
-    source = input(">>>").upper()
-    print("%s input has been chosen" % source)
+    while True:
+        print("Welcome to the Youtube Downloader")
+        print("Choose input method! (FILE/TERMINAL)")
+        source = input(">>>").upper()
 
-    if source == "FILE":
-        print("Checking for input.txt")
-        if not os.path.isfile("input.txt"):
-            open("input.txt", "x")
-            print("File not found. Please input your links in the input.txt file!")
-            input("Press enter to quit")
-            quit()
-        else:
-            print("File has been found!")
-            links = readFromFile("input.txt")
-            youtubeList, facebookList = checkHost(links)
+        if source == "FILE":
+            print("Checking for input.txt")
+            if not os.path.isfile("input.txt"):
+                open("input.txt", "x")
+                print("File not found. Please input your links in the input.txt file!")
+                input("Press enter to quit")
+                quit()
+            else:
+                print("File has been found!")
+                links = readFromFile("input.txt")
+                youtubeList, facebookList = checkHost(links)
+                if len(youtubeList) != 0:
+                    downloadYT(youtubeList)
+                else:
+                    print("No Youtube Videos!")
+                if len(facebookList) != 0:
+                    downloadFB(facebookList)
+                else:
+                    print("No Facebook Videos!")
+                break
+        elif source == "TERMINAL":
+            masterList = []
+            while True:
+                print("Input Youtube or Facebook links. Enter blank to exit")
+                link = input(">>>")
+                if link == "":
+                    break
+                else:
+                    masterList.append(link)
+            youtubeList, facebookList = checkHost(masterList)
             if len(youtubeList) != 0:
                 downloadYT(youtubeList)
             else:
@@ -35,24 +54,9 @@ def main():
                 downloadFB(facebookList)
             else:
                 print("No Facebook Videos!")
-    else:
-        masterList = []
-        while True:
-            print("Input Youtube or Facebook links. Enter blank to exit")
-            link = input(">>>")
-            if link == "":
-                break
-            else:
-                masterList.append(link)
-        youtubeList, facebookList = checkHost(masterList)
-        if len(youtubeList) != 0:
-            downloadYT(youtubeList)
+            break
         else:
-            print("No Youtube Videos!")
-        if len(facebookList) != 0:
-            downloadFB(facebookList)
-        else:
-            print("No Facebook Videos!")
+            print("Input not recognized, please retry")
 
     print("All files has been downloaded. Files can be found at '/viddownloader/downloads/' Press enter to exit")
     input("All files has been downloaded. Press enter to exit")
