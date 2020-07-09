@@ -85,6 +85,7 @@ def checkHost(linklist):
 def downloadYT(links):
     size = len(links)
     current = 0
+    print("Starting YouTube Downloads!")
     for link in links:
         current += 1
         video = YouTube(link)
@@ -130,11 +131,6 @@ def downloadYT(links):
         audio = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
         temp = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
 
-        print("does temp exist?")
-        print(os.path.exists(temp))
-        print("does final exist?")
-        print(os.path.exists(os.path.join(os.getcwd(), 'videos', '%s.mp4')))
-
         if os.path.exists(video) and os.path.exists(audio):
             print("Now concatenating video and audio streams of %s" % title)
             os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (video, audio, temp))
@@ -148,6 +144,7 @@ def downloadYT(links):
 
 
 def downloadFB(links):
+    print("Starting Facebook Downloads!")
     size = len(links)
     current = 1
     for link in links:
