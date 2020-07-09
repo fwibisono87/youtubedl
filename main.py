@@ -57,7 +57,7 @@ def main():
         else:
             print("Input not recognized, please retry")
 
-    print("All files has been downloaded. Files can be found at '/viddownloader/downloads/' Press enter to exit")
+    print("All files has been downloaded. Files can be found at '/videos/' Press enter to exit")
     input("All files has been downloaded. Press enter to exit")
     quit()
 
