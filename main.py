@@ -1,3 +1,4 @@
+import http
 import os
 import os.path
 import shutil
@@ -91,7 +92,19 @@ def downloadYT(links):
     print("Starting YouTube Downloads!")
     for link in links:
         current += 1
-        video = YouTube(link)
+        tryCounter = 0
+        while True:
+            try:
+                video = YouTube(link)
+                break
+            except http.client.RemoteDisconnected:
+                tryCounter += 1
+                if tryCounter <=5:
+                    print("HTTP Connection failed, retrying %d out of 5 attempts in 15s..." % tryCounter)
+                    time.sleep(15)
+                else:
+                    print("Reconnection failed. Please try again later.")
+                    quit()
         temptitle = video.title.replace("<", "").replace(">", "").replace("/", "").replace(":", "").replace('"',
                                                                                                               "").replace(
             "|", "").replace("/", "").replace('?', "").replace("*", "")
