@@ -101,9 +101,13 @@ def downloadYT(links):
                 if (confirm == 'Y' or confirm == 'y'):
                     print("Downloading!")
                     doToken = True
+                    break
                 elif(confirm == 'n' or confirm == 'N'):
                     print("Skipping download.")
                     doToken = False
+                    break
+                else:
+                    print("Input not recognized, please retry!")
         else:
             print("No previous download found, downloading!")
             doToken = True
