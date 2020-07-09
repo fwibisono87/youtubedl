@@ -156,7 +156,7 @@ def downloadYT(links):
 
             if os.path.exists(video) and os.path.exists(audio):
                 print("Now concatenating video and audio streams of %s" % title)
-                os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s > /dev/null' % (video, audio, temp))
+                os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (video, audio, temp))
                 shutil.move(temp, os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))
                 os.remove(video)
                 os.remove(audio)
