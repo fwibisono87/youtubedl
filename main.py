@@ -3,10 +3,8 @@ import os
 import os.path
 import shutil
 import time
-
 import requests
 import re
-
 import wget
 from pytube import YouTube
 
@@ -184,11 +182,15 @@ def downloadFB(links):
     size = len(links)
     current = 1
     for link in links:
-        html = requests.get(link)
-        url = re.search('hd_src:"(.+?)"', html.text)[1]
-        wget.download(url, os.path.join(os.getcwd(), 'videos'))
-        print("Finished downloading %d out of %d" % (current, size))
-        current += 1
+        try:
+            html = requests.get(link)
+            url = re.search('hd_src:"(.+?)"', html.text)[1]
+            wget.download(url, os.path.join(os.getcwd(), 'videos'))
+            print("Finished downloading %d out of %d" % (current, size))
+            current += 1
+        except TypeError:
+            print("This video is private and thus undownloadable :(, continuing!")
+
         
 
 
