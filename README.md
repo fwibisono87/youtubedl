@@ -1,17 +1,26 @@
 # Fwibisono87's Youtube Downloader!
 **Python3 is required**  
-#This python project allows you to download Youtube/Facebook videos, with maximum quality!
-You can use ether terminal or file input. If you want to use file input, modify the 'input.txt' file!
+This python project allows you to download Youtube/Facebook videos, with maximum quality!
 
-#Attention LINUX/MacOS users!
+***Current features:***
+* Link inputs with two methods!
+  * Terminal-based input  
+  * Textfile-based input ('input.txt')
+* Always downloads Youtube Videos at _maximum_ quality
+* Auto-merges audio and video streams for YouTube Videos
+* Allows automatic renaming of videos according to original titles (Only for YouTube) __(see naming fix.txt !)__  
+* Allows batch - downloading of videos __(see naming fix.txt !)__  
+
+
+**Attention LINUX/MacOS users!**
 Run the folowing pip commands to set everything up!
 >pip install -r requirements.txt  
 >pip install git+https://gitlab.com/obuilds/public/pytube@ob-v1 --upgrade
 
-#Windows users: 
+**Windows users:** 
 please run the setup.bat
 
-#Please follow instructions on the 'naming fix.txt' file!
+**Please follow instructions on the 'naming fix.txt' file!**
 
 Finally, run the program using cmd 'python main.py'
 
