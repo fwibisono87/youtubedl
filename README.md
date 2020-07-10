@@ -1,6 +1,6 @@
 # Fwibisono87's Youtube Downloader!
-#>Python3 is required :D
-This python project allows you to download Youtube/Facebook videos, with maximum quality!
+**Python3 is required**  
+#This python project allows you to download Youtube/Facebook videos, with maximum quality!
 You can use ether terminal or file input. If you want to use file input, modify the 'input.txt' file!
 
 #Attention LINUX/MacOS users!
