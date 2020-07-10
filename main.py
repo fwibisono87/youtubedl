@@ -57,7 +57,7 @@ def main():
         else:
             print("Input not recognized, please retry")
 
-    print("All files has been downloaded. Files can be found at '/videos/' Press enter to exit")
+    print("All files has been downloaded. Files can be found at '/viddownloader/downloads/' Press enter to exit")
     input("All files has been downloaded. Press enter to exit")
     quit()
 
@@ -97,53 +97,16 @@ def downloadYT(links):
                 break
             except http.client.RemoteDisconnected:
                 tryCounter += 1
-                if tryCounter <=5:
+                if tryCounter <= 5:
                     print("HTTP Connection failed, retrying %d out of 5 attempts in 15s..." % tryCounter)
                     time.sleep(15)
                 else:
                     print("Reconnection failed. Please try again later.")
                     quit()
-        temptitle = video.title.replace("<", "").replace(">", "").replace("/", "").replace(":", "").replace('"',
-                                                                                                              "").replace(
-            "|", "").replace("/", "").replace('?', "").replace("*", "")
-        title = temptitle[:70] + (temptitle[70:] and '..')
-
-        print("Checking if video has been downloaded...")
-        if(os.path.exists(os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))):
-            print("Video %s has been downloaded. Do you want to re-download?(Y/N)" % title)
-            while True:
-                confirm = input(">>> ")
-                if (confirm == 'Y' or confirm == 'y'):
-                    print("Downloading!")
-                    doToken = True
-                    break
-                elif(confirm == 'n' or confirm == 'N'):
-                    print("Skipping download.")
-                    doToken = False
-                    break
-                else:
-                    print("Input not recognized, please retry!")
-        else:
-            print("No previous download found, downloading!")
-            doToken = True
-
-        if doToken == True:
-            while True:
-                trycounter = 1
-                try:
-                    print("Now downloading video stream of %s from Youtube" % title)
-                    video.streams.filter(mime_type='video/mp4').order_by('resolution').desc().first().download(
-                        os.path.join(os.getcwd(), 'temp'), "video")
-                    print("Video stream downloaded.")
-                    break
-                except:
-                    if trycounter <= 5:
-                        print("A failure has occured, retrying in 15 seconds, attempt %d out of 5" % trycounter)
-                        trycounter += 1
-                        time.sleep(15)
-                    else:
-                        print("try limit failed, attempting to download audio only.")
-                        break
+        title = clean(video.title)
+        doToken = doCheck(title)
+        mode = mode()
+        if mode == "AUDIO":
             while True:
                 trycounter = 1
                 try:
@@ -159,22 +122,60 @@ def downloadYT(links):
                         time.sleep(15)
                     else:
                         print("try limit failed, skipping this download.")
-                        return None
 
-            video = os.path.join(os.getcwd(), 'temp', 'video.mp4')
             audio = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
-            temp = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
+            shutil.move(audio, os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))
+            print("Finished processing %s, video %d out of %d" % (title, current, size))
 
-            if os.path.exists(video) and os.path.exists(audio):
-                print("Now concatenating video and audio streams of %s" % title)
-                os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (video, audio, temp))
-                shutil.move(temp, os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))
-                os.remove(video)
-                os.remove(audio)
-                print("Finished processing %s, video %d out of %d" % (title, current, size))
-            elif os.path.exists(audio):
-                shutil.move(audio, os.path.join(os.getcwd(), 'videos', '%s.mp4') % title)
-                print("Finished processing %s, video %d out of %d. WARNING: NO VIDEO!" % (title, current, size))
+        elif mode == "ALL":
+            if doToken == True:
+                while True:
+                    trycounter = 1
+                    try:
+                        print("Now downloading video stream of %s from Youtube" % title)
+                        video.streams.filter(mime_type='video/mp4').order_by('resolution').desc().first().download(
+                            os.path.join(os.getcwd(), 'temp'), "video")
+                        print("Video stream downloaded.")
+                        break
+                    except:
+                        if trycounter <= 5:
+                            print("A failure has occured, retrying in 15 seconds, attempt %d out of 5" % trycounter)
+                            trycounter += 1
+                            time.sleep(15)
+                        else:
+                            print("try limit failed, attempting to download audio only.")
+                            break
+                while True:
+                    trycounter = 1
+                    try:
+                        print("Now downloading audio stream of %s from Youtube" % title)
+                        video.streams.filter(mime_type='audio/mp4').order_by('abr').desc().first().download(
+                            os.path.join(os.getcwd(), 'temp'), "audio")
+                        print("Audio stream downloaded.")
+                        break
+                    except:
+                        if trycounter <= 5:
+                            print("A failure has occured, retrying in 15 seconds, attempt %d out of 5" % trycounter)
+                            trycounter += 1
+                            time.sleep(15)
+                        else:
+                            print("try limit failed, skipping this download.")
+                            return None
+
+                video = os.path.join(os.getcwd(), 'temp', 'video.mp4')
+                audio = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
+                temp = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
+
+                if os.path.exists(video) and os.path.exists(audio):
+                    print("Now concatenating video and audio streams of %s" % title)
+                    os.system('ffmpeg -i %s -i %s -c:v copy -c:a aac %s' % (video, audio, temp))
+                    shutil.move(temp, os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))
+                    os.remove(video)
+                    os.remove(audio)
+                    print("Finished processing %s, video %d out of %d" % (title, current, size))
+                elif os.path.exists(audio):
+                    shutil.move(audio, os.path.join(os.getcwd(), 'videos', '%s.mp4') % title)
+                    print("Finished processing %s, video %d out of %d. WARNING: NO VIDEO!" % (title, current, size))
 
 
 def downloadFB(links):
@@ -191,8 +192,41 @@ def downloadFB(links):
         except TypeError:
             print("This video is private and thus undownloadable :(, continuing!")
 
-        
 
+def clean(title):
+    title1 = title.replace("<", "").replace(">", "").replace("/", "").replace(":", "").replace('"', "")
+    title2 = title1.replace("|", "").replace("/", "").replace('?', "").replace("*", "")
+    return title2
+
+def doCheck(title):
+    print("Checking if video has been downloaded...")
+    if (os.path.exists(os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))):
+        print("Video %s has been downloaded. Do you want to re-download?(Y/N)" % title)
+        while True:
+            confirm = input(">>> ")
+            if (confirm == 'Y' or confirm == 'y'):
+                print("Downloading!")
+                doToken = True
+                break
+            elif (confirm == 'n' or confirm == 'N'):
+                print("Skipping download.")
+                doToken = False
+                break
+            else:
+                print("Input not recognized, please retry!")
+    else:
+        print("No previous download found, downloading!")
+        doToken = True
+    return doToken
+
+def mode():
+    while True:
+        print("Please choose download mode! (AUDIO/ALL)")
+        mode = input().upper
+        if mode == 'AUDIO' or mode == 'ALL':
+            return mode
+        else:
+            print("Input not recognized, please try again")
 
 if __name__ == '__main__':
     main()
