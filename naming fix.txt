@@ -1,0 +1,13 @@
+The current version of PyTube carries an error, in which all titles are named "youtube".
+If this bothers you, please follow these instructions
+
+Edit the __main__.py located in your venv directory, For Windows, 
+it's usually at C:\Users\YOURUSERNAME\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\pytube
+(note: replace YOURUSERNAME with your own username)
+
+Go to line 116 or Find and Replace:
+i_start = self.watch_html.lower().index("<title>") + len("<title>")
+with
+i_start = self.watch_html.lower().index("<meta property=\"og:title\" content=\"") + len("<meta property=\"og:title\" content=\"")
+
+Save the file (ctrl+s), then run the main.py file again :D
