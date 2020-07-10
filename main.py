@@ -105,7 +105,7 @@ def downloadYT(links):
                     quit()
         title = clean(video.title)
         doToken = doCheck(title)
-        mode = mode()
+        mode = checkMode()
         if mode == "AUDIO":
             while True:
                 trycounter = 1
@@ -219,14 +219,17 @@ def doCheck(title):
         doToken = True
     return doToken
 
-def mode():
+def checkMode():
     while True:
         print("Please choose download mode! (AUDIO/ALL)")
-        mode = input().upper
-        if mode == 'AUDIO' or mode == 'ALL':
+        usr = input()
+        mode = usr.upper()
+        if mode == "AUDIO":
+            return mode
+        elif mode == "ALL":
             return mode
         else:
-            print("Input not recognized, please try again")
+            print("Input not recognized, please retry!")
 
 if __name__ == '__main__':
     main()
