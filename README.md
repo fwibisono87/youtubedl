@@ -7,3 +7,9 @@ Attention!: If you are NOT using Windows, please find a solution to install depe
 Windows users: please run the preparation.bat, and follow instructions on the after preparation.txt file!
 
 Finally, run the program using cmd 'python main.py'
+
+This project utilizes:
+>PyTube    https://pypi.org/project/pytube3/   
+>FFmpeg    https://ffmpeg.org/   
+>requests  https://requests.readthedocs.io/en/master/   
+>wget      https://pypi.org/project/wget/   
