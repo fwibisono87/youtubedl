@@ -5,7 +5,7 @@ You can use ether terminal or file input. If you want to use file input, modify 
 
 #Attention LINUX/MacOS users!
 Run the folowing pip commands to set everything up!
->pip install -r requirements.txt
+>pip install -r requirements.txt  
 >pip install git+https://gitlab.com/obuilds/public/pytube@ob-v1 --upgrade
 
 #Windows users: 
