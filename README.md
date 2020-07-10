@@ -10,6 +10,7 @@ This python project allows you to download Youtube/Facebook videos, with maximum
 * Auto-merges audio and video streams for YouTube Videos
 * Allows automatic renaming of videos according to original titles (Only for YouTube) __(see naming fix.txt !)__  
 * Allows batch - downloading of videos __(see naming fix.txt !)__  
+* __NEW!__ Allows option to download audio only from YouTube.
 
 
 **Attention LINUX/MacOS users!**
