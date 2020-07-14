@@ -63,12 +63,22 @@ def main():
 
 
 def readFromFile(filename):
+    '''
+    Reads from filename and returns contents of lines as a list\n
+    :param filename:
+    :return links:
+    '''
     with open(filename) as file:
         links = file.read().splitlines()
     return links
 
 
 def checkHost(linklist):
+    '''
+    Checks the hosts of the links, and returns them sorted to two lists
+    :param linklist: list of links\n
+    :returns youtubeList, facebookList: list of links, according to their hosts
+    '''
     youtubeList = []
     facebookList = []
     unhandledList = []
@@ -83,7 +93,7 @@ def checkHost(linklist):
         (len(youtubeList)), (len(facebookList)), len(unhandledList)))
     return youtubeList, facebookList
 
-
+#TODO: Create downloadYT alternative that runs without user input
 def downloadYT(links):
     size = len(links)
     current = 0
@@ -128,7 +138,7 @@ def downloadYT(links):
             print("Finished processing %s, video %d out of %d" % (title, current, size))
 
         elif mode == "ALL":
-            if doToken == True:
+            if doToken:
                 while True:
                     trycounter = 1
                     try:
@@ -198,17 +208,18 @@ def clean(title):
     title2 = title1.replace("|", "").replace("/", "").replace('?', "").replace("*", "")
     return title2
 
+
 def doCheck(title):
     print("Checking if video has been downloaded...")
-    if (os.path.exists(os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))):
+    if os.path.exists(os.path.join(os.getcwd(), 'videos', '%s.mp4' % title)):
         print("Video %s has been downloaded. Do you want to re-download?(Y/N)" % title)
         while True:
             confirm = input(">>> ")
-            if (confirm == 'Y' or confirm == 'y'):
+            if confirm == 'Y' or confirm == 'y':
                 print("Downloading!")
                 doToken = True
                 break
-            elif (confirm == 'n' or confirm == 'N'):
+            elif confirm == 'n' or confirm == 'N':
                 print("Skipping download.")
                 doToken = False
                 break
@@ -218,6 +229,7 @@ def doCheck(title):
         print("No previous download found, downloading!")
         doToken = True
     return doToken
+
 
 def checkMode():
     while True:
@@ -230,6 +242,18 @@ def checkMode():
             return mode
         else:
             print("Input not recognized, please retry!")
+
+
+def writeToFile(filename, link):
+    if os.exist(filename):
+        with open(filename) as file:
+            currentList = readFromFile(file)
+            if link not in currentList:
+                file.write(link + "\n")
+    else:
+        with open(filename, 'w') as file:
+            file.write(link)
+
 
 if __name__ == '__main__':
     main()
