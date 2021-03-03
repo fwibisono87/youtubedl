@@ -8,7 +8,7 @@ This python project allows you to download Youtube/Facebook videos, with maximum
   * Textfile-based input ('input.txt')
 * Always downloads Youtube Videos at _maximum_ quality
 * Auto-merges audio and video streams for YouTube Videos
-* Allows automatic renaming of videos according to original titles (Only for YouTube) __(see naming fix.txt !)__  
+* Allows automatic renaming of videos according to original titles (Only for YouTube)
 * Allows batch - downloading of videos __(see naming fix.txt !)__  
 * Allows downloading of Facebook videos
 * __NEW!__ Allows option to download audio only from YouTube.
@@ -17,7 +17,7 @@ This python project allows you to download Youtube/Facebook videos, with maximum
 **Attention LINUX/MacOS users!**
 Run the folowing pip commands to set everything up!
 >pip install -r requirements.txt  
->pip install git+https://gitlab.com/obuilds/public/pytube@ob-v1 --upgrade
+>pip install git+https://github.com/nficano/pytube
 
 **Windows users:** 
 please run the setup.bat
