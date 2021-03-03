@@ -105,8 +105,8 @@ def downloadYT(links):
                     quit()
         title = clean(video.title)
         doToken = doCheck(title)
-        mode = mode()
-        if mode == "AUDIO":
+        dlMode = mode()
+        if dlMode == "AUDIO":
             while True:
                 trycounter = 1
                 try:
@@ -127,7 +127,7 @@ def downloadYT(links):
             shutil.move(audio, os.path.join(os.getcwd(), 'videos', '%s.mp4' % title))
             print("Finished processing %s, video %d out of %d" % (title, current, size))
 
-        elif mode == "ALL":
+        elif dlMode == "ALL":
             if doToken == True:
                 while True:
                     trycounter = 1
@@ -144,6 +144,7 @@ def downloadYT(links):
                             time.sleep(15)
                         else:
                             print("try limit failed, attempting to download audio only.")
+                            time.sleep(15)
                             break
                 while True:
                     trycounter = 1
@@ -160,11 +161,13 @@ def downloadYT(links):
                             time.sleep(15)
                         else:
                             print("try limit failed, skipping this download.")
+                            time.sleep(15)
                             return None
 
                 video = os.path.join(os.getcwd(), 'temp', 'video.mp4')
                 audio = os.path.join(os.getcwd(), 'temp', 'audio.mp4')
                 temp = os.path.join(os.getcwd(), 'temp', 'temp.mp4')
+                os.mkdir(os.path.join(os.getcwd(), 'videos', '%s.mp4'))
 
                 if os.path.exists(video) and os.path.exists(audio):
                     print("Now concatenating video and audio streams of %s" % title)
@@ -222,7 +225,8 @@ def doCheck(title):
 def mode():
     while True:
         print("Please choose download mode! (AUDIO/ALL)")
-        mode = input().upper
+        mode = input().upper()
+        print(mode)
         if mode == 'AUDIO' or mode == 'ALL':
             return mode
         else:
@@ -230,3 +234,4 @@ def mode():
 
 if __name__ == '__main__':
     main()
+
