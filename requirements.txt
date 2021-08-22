@@ -12,5 +12,5 @@ pywin32-ctypes==0.2.0
 requests==2.24.0
 soupsieve==2.0.1
 typing-extensions==3.7.4.2
-urllib3==1.25.9
+urllib3==1.26.5
 wget==3.2
